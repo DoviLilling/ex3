@@ -35,10 +35,10 @@ void printMenu(){
 }
 
 
-void initializeCube(int cube[][NUM_OF_BRANDS][NUM_OF_TYPES], int daysInYear, int numOfBrands, int numOfTypes){
-    #define initVal -1
-    for (int i = 0; i < daysInYear; i++){
-        for (int j = 0; j < numOfBrands; j++){
+void initializeCube(int cube[][NUM_OF_BRANDS][NUM_OF_TYPES], int daysInYear, int numOfBrands, int numOfTypes) {
+#define initVal -1
+    for (int i = 0; i < daysInYear; i++) {
+        for (int j = 0; j < numOfBrands; j++) {
             for (int k = 0; k < numOfTypes; k++)
                 cube[i][j][k] = initVal;
         }
@@ -65,10 +65,10 @@ int isMissingBrandDataInDay(int nextBrandDays[], int nextBrandDaysSize, int dayT
 }
 
 
-int getValidBrand(){
+int getValidBrand() {
     int brandSelected;
     scanf("%d", &brandSelected);
-    while (brandSelected < 0 || brandSelected >= NUM_OF_BRANDS){
+    while (brandSelected < 0 || brandSelected >= NUM_OF_BRANDS) {
         printf("This brand is not valid\n");
         scanf("%d", &brandSelected);
     }
@@ -76,29 +76,29 @@ int getValidBrand(){
 }
 
 
-void setDailyBrandSales(int cube[][NUM_OF_BRANDS][NUM_OF_TYPES], int daysInYear, int numOfBrands, int numOfTypes, int nextBrandDays[], int nextBrandDaysSize, int whichBrand){
-    for (int i = 0; i < numOfTypes; i++){
+void setDailyBrandSales(int cube[][NUM_OF_BRANDS][NUM_OF_TYPES], int daysInYear, int numOfBrands, int numOfTypes,
+                        int nextBrandDays[], int nextBrandDaysSize, int whichBrand) {
+    for (int i = 0; i < numOfTypes; i++) {
         scanf("%d", &cube[nextBrandDays[whichBrand]][whichBrand][i]);
     }
     nextBrandDays[whichBrand]++;
 }
 
 
-void printMissingBrands(int nextBrandDays[], int nextBrandDaysSize, int currentDay)
-{
+void printMissingBrands(int nextBrandDays[], int nextBrandDaysSize, int currentDay) {
     printf("No data for brands ");
-    for (int i = 0; i < NUM_OF_BRANDS; i++){
+    for (int i = 0; i < NUM_OF_BRANDS; i++) {
         if (nextBrandDays[i] < currentDay)
             printf("%s ", brands[i]);
     }
-    printf("\nPlease complete the data.\n");
+    printf("\nPlease complete the data\n");
 }
 
 
-int getValidBrandForDailyData(int nextBrandDays[], int nextBrandDaysSize, int currentDay){
+int getValidBrandForDailyData(int nextBrandDays[], int nextBrandDaysSize, int currentDay) {
     int brandSelected;
     scanf("%d", &brandSelected);
-    while (brandSelected < 0 || brandSelected > nextBrandDaysSize - 1 || (nextBrandDays[brandSelected] == currentDay)){
+    while (brandSelected < 0 || brandSelected > nextBrandDaysSize - 1 || (nextBrandDays[brandSelected] == currentDay)) {
         printf("This brand is not valid\n");
         printMissingBrands(nextBrandDays, nextBrandDaysSize, currentDay);
         scanf("%d", &brandSelected);
@@ -107,79 +107,72 @@ int getValidBrandForDailyData(int nextBrandDays[], int nextBrandDaysSize, int cu
 }
 
 
-void setDailyData(int cube[][NUM_OF_BRANDS][NUM_OF_TYPES], int daysInYear, int numOfBrands, int numOfTypes, int nextBrandDays[], int nextBrandDaysSize){
+void setDailyData(int cube[][NUM_OF_BRANDS][NUM_OF_TYPES], int daysInYear, int numOfBrands, int numOfTypes,
+                  int nextBrandDays[], int nextBrandDaysSize) {
     int dayToSet = getNextDayFromCounter(nextBrandDays, nextBrandDaysSize);
-    while (isMissingBrandDataInDay(nextBrandDays, nextBrandDaysSize, dayToSet)){
+    while (isMissingBrandDataInDay(nextBrandDays, nextBrandDaysSize, dayToSet)) {
         printMissingBrands(nextBrandDays, nextBrandDaysSize, dayToSet);
-        setDailyBrandSales(cube, DAYS_IN_YEAR, NUM_OF_BRANDS, NUM_OF_TYPES, nextBrandDays, nextBrandDaysSize, getValidBrandForDailyData(nextBrandDays, NUM_OF_BRANDS, dayToSet));
+        setDailyBrandSales(cube, DAYS_IN_YEAR, NUM_OF_BRANDS, NUM_OF_TYPES,
+                           nextBrandDays, nextBrandDaysSize,
+                           getValidBrandForDailyData(nextBrandDays, NUM_OF_BRANDS, dayToSet));
     }
 }
 
 
-int getValidDay(int maxDay){
+int getValidDay(int maxDay) {
     int daySelected;
     printf("What day would you like to analyze?\n");
     scanf("%d", &daySelected);
-    while(daySelected <= 0 || daySelected > maxDay){
+    while (daySelected <= 0 || daySelected > maxDay) {
         printf("Please enter a valid day.\n");
-        printf("Which day would you like to analyze?\n");
+        printf("What day would you like to analyze?\n");
         scanf("%d", &daySelected);
     }
     return daySelected;
 }
 
 
-void printArrayCell(char array[], int index){
-    printf("%s", array[index]);
-}
-
-
-int printTotalSales(int cube[][NUM_OF_BRANDS][NUM_OF_TYPES], int daysInYear, int numOfBrands, int numOfTypes, int day){
+int printTotalSales(int cube[][NUM_OF_BRANDS][NUM_OF_TYPES], int daysInYear, int numOfBrands, int numOfTypes, int day) {
     int totalSales = 0;
-    for(int i = 0; i < numOfBrands; i++){
-        for(int j = 0; j < numOfTypes; j++){
+    for (int i = 0; i < numOfBrands; i++)
+        for (int j = 0; j < numOfTypes; j++)
             totalSales += cube[day][i][j];
-        }
-    }
     printf("The sales total was %d\n", totalSales);
 }
 
-int printBestSoldBrandForDay(int cube[][NUM_OF_BRANDS][NUM_OF_TYPES], int daysInYear, int numOfBrands, int numOfTypes, int day){
+
+int printBestSoldBrandForDay(int cube[][NUM_OF_BRANDS][NUM_OF_TYPES], int daysInYear, int numOfBrands, int numOfTypes,
+    int day) {
     int brandSales[NUM_OF_BRANDS] = {0}, maxSales = 0;
-    for(int brand = 0; brand < numOfBrands; brand++){
-        for(int type = 0; type < numOfTypes; type++) {
+    for (int brand = 0; brand < numOfBrands; brand++) {
+        for (int type = 0; type < numOfTypes; type++)
             brandSales[brand] += cube[day][brand][type];
-        }
         if (maxSales < brandSales[brand])
             maxSales = brandSales[brand];
     }
-    for(int brand = 0; brand < numOfBrands; brand++){
-        if(brandSales[brand] == maxSales){
+    for (int brand = 0; brand < numOfBrands; brand++)
+        if (brandSales[brand] == maxSales)
             printf("The best sold brand with %d sales was %s\n", brandSales[brand], brands[brand]);
-        }
-    }
 }
 
-void printBestSoldTypeForDay(int cube[][NUM_OF_BRANDS][NUM_OF_TYPES], int daysInYear, int numOfBrands, int numOfTypes, int day){
+
+void printBestSoldTypeForDay(int cube[][NUM_OF_BRANDS][NUM_OF_TYPES], int daysInYear, int numOfBrands, int numOfTypes,
+    int day) {
     int typeSales[NUM_OF_TYPES] = {0}, maxSales = 0;
-    for(int type = 0; type < numOfTypes; type++){
-        for(int brand = 0; brand < numOfBrands; brand++) {
+    for (int type = 0; type < numOfTypes; type++) {
+        for (int brand = 0; brand < numOfBrands; brand++)
             typeSales[type] += cube[day][brand][type];
-        }
         if (maxSales < typeSales[type])
             maxSales = typeSales[type];
     }
-    printf("maxSales: %d\n", maxSales);
-    for(int type = 0; type < numOfTypes; type++){
-        printf("typeSales[type]: %d\n", typeSales[type]);
-        if(typeSales[type] == maxSales){
+    for (int type = 0; type < numOfTypes; type++)
+        if (typeSales[type] == maxSales)
             printf("The best sold type with %d sales was %s\n", typeSales[type], types[type]);
-        }
-    }
 }
 
 
-void printStatsForDay(int cube[][NUM_OF_BRANDS][NUM_OF_TYPES], int daysInYear, int numOfBrands, int numOfTypes, int maxDay){
+void printStatsForDay(int cube[][NUM_OF_BRANDS][NUM_OF_TYPES], int daysInYear, int numOfBrands, int numOfTypes,
+    int maxDay) {
     int daySelected;
     daySelected = getValidDay(maxDay);
     printf("In day number %d:\n", daySelected);
@@ -191,11 +184,12 @@ void printStatsForDay(int cube[][NUM_OF_BRANDS][NUM_OF_TYPES], int daysInYear, i
 }
 
 
-void printAllData(int cube[][NUM_OF_BRANDS][NUM_OF_TYPES], int daysInYear, int numOfBrands, int numOfTypes, int maxDay){
+void printAllData(int cube[][NUM_OF_BRANDS][NUM_OF_TYPES], int daysInYear, int numOfBrands, int numOfTypes,
+    int maxDay) {
     printf("*****************************************\n\n");
-    for (int brand = 0; brand < NUM_OF_BRANDS; brand++){
+    for (int brand = 0; brand < NUM_OF_BRANDS; brand++) {
         printf("Sales for %s:\n", brands[brand]);
-        for (int day = 0; day < maxDay; day++){
+        for (int day = 0; day < maxDay; day++) {
             printf("Day %d- ", day + 1);
             for (int type = 0; type < NUM_OF_TYPES; type++)
                 printf("%s: %d ", types[type], cube[day][brand][type]);
@@ -227,11 +221,12 @@ void getMaxValueAndIndexFromArray(int array[], int arraySize, int returnArray[2]
 }
 
 
-void printInsights(int cube[][NUM_OF_BRANDS][NUM_OF_TYPES], int daysInYear, int numOfBrands, int numOfTypes, int maxDay) {
+void printInsights(int cube[][NUM_OF_BRANDS][NUM_OF_TYPES], int daysInYear, int numOfBrands, int numOfTypes,
+    int maxDay) {
     int brandSales[NUM_OF_BRANDS] = {0}, typeSales[NUM_OF_TYPES] = {0}, daySales[DAYS_IN_YEAR] = {0}, maxArray[2] = {0};
     for (int day = 0; day < maxDay; day++) {
-        for(int brand = 0; brand < NUM_OF_BRANDS; brand++) {
-            for(int type = 0; type < NUM_OF_TYPES; type++) {
+        for (int brand = 0; brand < NUM_OF_BRANDS; brand++) {
+            for (int type = 0; type < NUM_OF_TYPES; type++) {
                 brandSales[brand] += cube[day][brand][type];
                 typeSales[type] += cube[day][brand][type];
                 daySales[day] += cube[day][brand][type];
@@ -245,18 +240,20 @@ void printInsights(int cube[][NUM_OF_BRANDS][NUM_OF_TYPES], int daysInYear, int 
     printf("The best-selling type of car is %s: %d$\n", types[maxArray[1]], maxArray[0]);
 
     getMaxValueAndIndexFromArray(daySales, maxDay, maxArray);
-    printf("The most profitable day was day number %d: %d$\n", maxArray[1]+1, maxArray[0]);
+    printf("The most profitable day was day number %d: %d$\n", maxArray[1] + 1, maxArray[0]);
 }
 
 
-int getDailySumForBrand(int cube[][NUM_OF_BRANDS][NUM_OF_TYPES], int daysInYear, int numOfBrands, int numOfTypes, int day, int brand) {
+int getDailySumForBrand(int cube[][NUM_OF_BRANDS][NUM_OF_TYPES], int daysInYear, int numOfBrands, int numOfTypes,
+    int day, int brand) {
     int sum = 0;
-    for(int type = 0; type < NUM_OF_TYPES; type++)
+    for (int type = 0; type < NUM_OF_TYPES; type++)
         sum += cube[day][brand][type];
     return sum;
 }
 
-float getAvgDeltaForBrand(int cube[][NUM_OF_BRANDS][NUM_OF_TYPES], int daysInYear, int numOfBrands, int numOfTypes, int maxDay, int brand) {
+float getAvgDeltaForBrand(int cube[][NUM_OF_BRANDS][NUM_OF_TYPES], int daysInYear, int numOfBrands, int numOfTypes,
+                          int maxDay, int brand) {
     int prevDaySum = getDailySumForBrand(cube, daysInYear, numOfBrands, numOfTypes, 0, brand), currDaySum;
     float deltaSum = 0.0;
     for (int day = 1; day < maxDay; day++) {
@@ -268,52 +265,12 @@ float getAvgDeltaForBrand(int cube[][NUM_OF_BRANDS][NUM_OF_TYPES], int daysInYea
 }
 
 
-void printAvgDelta(int cube[][NUM_OF_BRANDS][NUM_OF_TYPES], int daysInYear, int numOfBrands, int numOfTypes, int maxDay) {
+void printAvgDelta(int cube[][NUM_OF_BRANDS][NUM_OF_TYPES], int daysInYear, int numOfBrands, int numOfTypes,
+    int maxDay) {
     for (int brand = 0; brand < NUM_OF_BRANDS; brand++)
-        printf("Brand: %s, Average Delta: %f\n", brands[brand], getAvgDeltaForBrand(cube, daysInYear, numOfBrands, numOfTypes, maxDay, brand));
+        printf("Brand: %s, Average Delta: %f\n", brands[brand],
+               getAvgDeltaForBrand(cube, daysInYear, numOfBrands, numOfTypes, maxDay, brand));
 }
-/*
-Brand: Toyoga, Average Delta: 0.000000
-Brand: HyunNight, Average Delta: 1.666667
-Brand: Mazduh, Average Delta: 0.000000
-Brand: FolksVegan, Average Delta: 0.000000
-Brand: Key-Yuh, Average Delta: 0.000000
-*/
-
-/*
-2
-0 1 1 1 1
-1 2 1 1 1
-2 1 1 1 3
-3 1 1 1 1
-4 1 1 1 1
-2
-0 1 1 1 1
-1 2 1 1 4
-2 1 1 1 3
-3 20 1 1 1
-4 1 1 1 1
-2
-0 1 1 1 1
-1 2 1 3 1
-2 1 1 1 3
-3 1 1 1 1
-4 1 1 1 1
-2
-0 1 1 1 1
-1 2 2 3 3
-2 1 1 1 3
-3 1 1 1 1
-4 1 1 1 1
-3
-5
-4
-4
-5
-6
-7
-
-*/
 
 
 int main() {
@@ -323,25 +280,30 @@ int main() {
     initializeCube(cube, DAYS_IN_YEAR, NUM_OF_BRANDS, NUM_OF_TYPES);
     printMenu();
     scanf("%d", &choice);
-    while(choice != done){
-        switch(choice){
+    while (choice != done) {
+        switch (choice) {
             case addOne:
-                setDailyBrandSales(cube, DAYS_IN_YEAR, NUM_OF_BRANDS, NUM_OF_TYPES, days, NUM_OF_BRANDS, getValidBrand());
+                setDailyBrandSales(cube, DAYS_IN_YEAR, NUM_OF_BRANDS, NUM_OF_TYPES, days, NUM_OF_BRANDS,
+                                   getValidBrand());
                 break;
             case addAll:
                 setDailyData(cube, DAYS_IN_YEAR, NUM_OF_BRANDS, NUM_OF_TYPES, days, NUM_OF_BRANDS);
                 break;
             case stats:
-                printStatsForDay(cube, DAYS_IN_YEAR, NUM_OF_BRANDS, NUM_OF_TYPES, getMaxDayFromCounter(days, NUM_OF_BRANDS));
+                printStatsForDay(cube, DAYS_IN_YEAR, NUM_OF_BRANDS, NUM_OF_TYPES,
+                                 getMaxDayFromCounter(days, NUM_OF_BRANDS));
                 break;
             case print:
-                printAllData(cube, DAYS_IN_YEAR, NUM_OF_BRANDS, NUM_OF_TYPES, getMaxDayFromCounter(days, NUM_OF_BRANDS));
+                printAllData(cube, DAYS_IN_YEAR, NUM_OF_BRANDS, NUM_OF_TYPES,
+                             getMaxDayFromCounter(days, NUM_OF_BRANDS));
                 break;
             case insights:
-                printInsights(cube, DAYS_IN_YEAR, NUM_OF_BRANDS, NUM_OF_TYPES, getMaxDayFromCounter(days, NUM_OF_BRANDS));
+                printInsights(cube, DAYS_IN_YEAR, NUM_OF_BRANDS, NUM_OF_TYPES,
+                              getMaxDayFromCounter(days, NUM_OF_BRANDS));
                 break;
             case deltas:
-                printAvgDelta(cube, DAYS_IN_YEAR, NUM_OF_BRANDS, NUM_OF_TYPES, getMaxDayFromCounter(days, NUM_OF_BRANDS));
+                printAvgDelta(cube, DAYS_IN_YEAR, NUM_OF_BRANDS, NUM_OF_TYPES,
+                              getMaxDayFromCounter(days, NUM_OF_BRANDS));
                 break;
             default:
                 printf("Invalid input\n");
@@ -352,5 +314,3 @@ int main() {
     printf("Goodbye!\n");
     return 0;
 }
-
-
