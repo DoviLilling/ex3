@@ -78,6 +78,7 @@ int getValidBrand() {
 
 void setDailyBrandSales(int cube[][NUM_OF_BRANDS][NUM_OF_TYPES], int daysInYear, int numOfBrands, int numOfTypes,
                         int nextBrandDays[], int nextBrandDaysSize, int whichBrand) {
+    printf("cube: %d", cube);
     for (int i = 0; i < numOfTypes; i++) {
         scanf("%d", &cube[nextBrandDays[whichBrand]][whichBrand][i]);
     }
@@ -185,11 +186,11 @@ void printStatsForDay(int cube[][NUM_OF_BRANDS][NUM_OF_TYPES], int daysInYear, i
 
 
 void printAllData(int cube[][NUM_OF_BRANDS][NUM_OF_TYPES], int daysInYear, int numOfBrands, int numOfTypes,
-    int maxDay) {
+    int daysCounter[], int daysCounterSize) {
     printf("*****************************************\n\n");
     for (int brand = 0; brand < NUM_OF_BRANDS; brand++) {
         printf("Sales for %s:\n", brands[brand]);
-        for (int day = 0; day < maxDay; day++) {
+        for (int day = 0; day < daysCounter[brand]; day++) {
             printf("Day %d- ", day + 1);
             for (int type = 0; type < NUM_OF_TYPES; type++)
                 printf("%s: %d ", types[type], cube[day][brand][type]);
@@ -295,7 +296,7 @@ int main() {
                 break;
             case print:
                 printAllData(cube, DAYS_IN_YEAR, NUM_OF_BRANDS, NUM_OF_TYPES,
-                             getMaxDayFromCounter(days, NUM_OF_BRANDS));
+                             days, NUM_OF_BRANDS);
                 break;
             case insights:
                 printInsights(cube, DAYS_IN_YEAR, NUM_OF_BRANDS, NUM_OF_TYPES,
